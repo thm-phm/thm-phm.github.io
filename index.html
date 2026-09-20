@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thomas Pham — Portfolio</title>
+  <meta name="description" content="Commerce / Computer Science student at Monash. Projects in algorithms, logic and data.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230f6e63%27/%3E%3Ctext x=%2716%27 y=%2722%27 font-family=%27Arial%27 font-weight=%27700%27 font-size=%2716%27 fill=%27white%27 text-anchor=%27middle%27%3ETP%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="./">Thomas Pham</a>
+      <nav class="nav">
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">Commerce / Computer Science · Monash University</div>
+      <h1>I build tools that turn messy<br>constraints into clear answers.</h1>
+      <p class="lede">
+        I'm a double-degree student working where algorithms meet business problems:
+        scheduling, optimisation and data analysis. Every project below runs live in your browser.
+      </p>
+      <div class="links">
+        <a class="btn primary" href="#projects">See projects</a>
+        <a class="btn" href="https://github.com/thm-phm">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/thomas-pham-490963256/">LinkedIn</a>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="cards">
+        <a class="card" href="projects/timetable-solver/">
+          <div class="eyebrow" style="margin:0">Live demo</div>
+          <h3>Timetable solver using SAT</h3>
+          <p>Picks a clash-free uni timetable and finds the fewest days on campus.
+             It translates the timetable into boolean logic and solves it with a SAT solver I wrote from scratch.</p>
+          <div class="tags"><span class="tag">SAT / CNF</span><span class="tag">Optimisation</span><span class="tag">JavaScript</span></div>
+        </a>
+        <!-- Add the next project card here, same structure as above. -->
+      </div>
+    </section>
+
+    <section id="about">
+      <h2>About</h2>
+      <div class="split">
+        <div class="prose">
+          <!-- TODO: rewrite in your own voice. Keep it to two short paragraphs. -->
+          <p>I'm studying a Bachelor of Commerce / Bachelor of Computer Science at Monash (started 2024).
+             On the CS side I've taken algorithms, databases and the theory of computation.
+             On the commerce side most of my units are in economics. The rest of my degree is data science:
+             analytics, modelling, visualisation and a two-part industry project.</p>
+          <p>Alongside uni I work casually as a Sleep Coach at ResMed.
+             <!-- TODO: one sentence on what the job taught you that a tech/data employer would value. --></p>
+        </div>
+        <ul class="facts">
+          <li><span>Degree</span><span>B. Commerce / B. Computer Science</span></li>
+          <li><span>University</span><span>Monash, 2024 – present</span></li>
+          <li><span>Relevant units</span><span>Algorithms &amp; Data Structures, Theory of Computation, Databases</span></li>
+          <li><span>Economics</span><span>Intermediate Micro &amp; Macro, Environmental Economics</span></li>
+          <li><span>Work</span><span>Sleep Coach, ResMed</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p class="muted">Open to internships and graduate roles in data, software and analytics.</p>
+      <p><a href="mailto:phamthomas05@gmail.com">phamthomas05@gmail.com</a></p>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">© 2026 Thomas Pham · Hosted on GitHub Pages.</div>
+  </footer>
+</body>
+</html>

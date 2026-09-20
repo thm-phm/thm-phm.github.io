@@ -1,0 +1,72 @@
+/* Styles specific to the timetable solver demo. */
+:root {
+  --u1: #2f6fb3; --u2: #b3572f; --u3: #6c4fb0; --u4: #2f8a57; --u5: #a8325e; --u6: #8a7a1f;
+  --block: var(--warn);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --u1: #6aa7e8; --u2: #eb8e62; --u3: #a78be8; --u4: #62c28d; --u5: #e56d98; --u6: #d2bf55; }
+}
+
+.demo { display: grid; gap: 16px; margin-bottom: 24px; }
+@media (min-width: 960px) { .demo { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; } }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; min-width: 0; }
+.panel-title { display: block; font-weight: 600; margin-bottom: 10px; }
+
+textarea {
+  width: 100%; min-height: 330px; resize: vertical; padding: 12px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  font: 13px/1.6 var(--mono); white-space: pre; overflow-x: auto; tab-size: 2;
+}
+textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+.prefs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 14px 0; }
+.prefs label { display: flex; flex-direction: column; gap: 4px; font-size: 0.82rem; color: var(--muted); }
+select {
+  min-height: 36px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--ink); font: 0.92rem var(--font);
+}
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.status { padding: 10px 14px; border-radius: 8px; font-weight: 500; margin-bottom: 14px; background: var(--accent-soft); color: var(--accent); }
+.status.bad { background: var(--warn-soft); color: var(--warn); }
+.status small { display: block; font-weight: 400; color: var(--muted); margin-top: 2px; }
+
+/* Week grid: a time gutter plus one column per day, events absolutely positioned by minute. */
+.grid { --hour: 34px; display: grid; grid-template-columns: 44px repeat(var(--days), minmax(0, 1fr)); overflow: hidden; }
+.grid .dayhead { font: 600 0.8rem var(--font); text-align: center; padding-bottom: 6px; color: var(--muted); }
+.grid .dayhead.on { color: var(--ink); }
+.grid .times, .grid .col { position: relative; height: calc(var(--hour) * var(--span)); }
+.grid .col { border-left: 1px solid var(--line); background-image: linear-gradient(var(--line) 1px, transparent 1px); background-size: 100% var(--hour); }
+.grid .times span { position: absolute; right: 6px; transform: translateY(-50%); font: 0.7rem var(--mono); color: var(--muted); }
+.ev {
+  position: absolute; left: 3px; right: 3px; border-radius: 6px; padding: 3px 6px; overflow: hidden;
+  font-size: 0.72rem; line-height: 1.25; color: #fff; background: var(--c);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12); animation: pop 0.25s ease-out both;
+}
+@media (prefers-color-scheme: dark) { .ev { color: #111; } }
+.ev b { display: block; font-weight: 650; }
+.ev.block {
+  background: repeating-linear-gradient(135deg, var(--warn-soft) 0 6px, transparent 6px 12px);
+  border: 1px dashed var(--block); color: var(--warn); box-shadow: none; animation: none;
+}
+@keyframes pop { from { opacity: 0; transform: scale(0.96); } }
+@media (prefers-reduced-motion: reduce) { .ev { animation: none; } }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(86px, 1fr)); gap: 8px; margin: 16px 0 0; }
+.stats div { background: var(--bg); border-radius: 8px; padding: 8px 10px; }
+.stats dt { font-size: 0.72rem; color: var(--muted); }
+.stats dd { margin: 0; font: 500 1rem var(--mono); }
+
+.log { margin: 14px 0 0; padding-left: 20px; font: 0.8rem/1.7 var(--mono); color: var(--muted); }
+.log:empty { display: none; }
+.log .unsat { color: var(--warn); }
+.log .sat { color: var(--accent); }
+
+.counts { border-collapse: collapse; font-size: 0.92rem; margin: 8px 0 16px; }
+.counts td { padding: 6px 18px 6px 0; border-bottom: 1px solid var(--line); }
+.counts td:last-child { font-family: var(--mono); text-align: right; }
+.counts tr:last-child td { font-weight: 600; border-bottom: 0; }
+details summary { cursor: pointer; color: var(--accent); margin-bottom: 8px; }
+details pre { max-height: 320px; font-size: 0.78rem; }
+@media (max-width: 520px) { .ev { font-size: 0.62rem; padding: 2px 4px; } .nav { gap: 14px; } }
