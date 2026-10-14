@@ -29,9 +29,9 @@
       <div class="eyebrow">Project · SAT / CNF · Optimisation</div>
       <h1>Timetable solver using SAT</h1>
       <p class="lede">
-        Choosing uni classes is a constraint problem: one option per class, no clashes, nothing during work,
-        and ideally as few days on campus as possible. This tool translates those rules into boolean logic
-        and solves them with a SAT solver I wrote from scratch. Everything runs in your browser.
+        Choosing a university class is really a constraint problem.
+        For every class, you can only attend one timeslot, and no other classes can overlap, where the fewer days you spend on campus the better.
+        This tool turns those rules into boolean logic, then hands them to a SAT solver I built. It all runs in your browser.
       </p>
       <div class="links">
         <a class="btn" href="https://github.com/thm-phm/thm-phm.github.io/tree/main/projects/timetable-solver">Source code</a>
@@ -74,42 +74,45 @@
       <h2>How it works</h2>
       <!-- TODO: this write-up is a draft. Rewrite it in your own words before publishing:
            interviewers will ask about it, and your own phrasing will be easier to defend. -->
-      <h3>1. The problem as boolean variables</h3>
+      <h3>1. Converting the problem into boolean algebra</h3>
       <p>
-        Every class option gets one boolean variable: <code>x = true</code> means "I'm taking this option".
-        Each rule then becomes a set of <em>clauses</em>: ORs of variables or their negations, which must all be true.
-        This is <strong>conjunctive normal form (CNF)</strong>, the input format for every SAT solver.
+        Every class time is assigned one boolean variable: <code>x = true</code> means “I’m choosing this option”.
+        Each rule then becomes a set of <em>clauses</em>. A clause is an OR of variables or their negations, and every clause must be true.
+        This is <strong>conjunctive normal form (CNF)</strong>, the standard input format for SAT solvers.
       </p>
       <ul>
-        <li><strong>Exactly one option per class.</strong> One clause <code>x₁ ∨ x₂ ∨ … ∨ xₙ</code> (at least one), plus
+        <li><strong>Exactly one option per class:</strong> One clause <code>x₁ ∨ x₂ ∨ … ∨ xₙ</code> (at least one), plus
             <code>¬xᵢ ∨ ¬xⱼ</code> for every pair (at most one).</li>
-        <li><strong>No clashes.</strong> If two options from different classes overlap: <code>¬a ∨ ¬b</code>.</li>
-        <li><strong>Blocked times and hours.</strong> An option during work or outside your hours becomes a single-literal clause <code>¬x</code>.</li>
+        <li><strong>No clashes:</strong> If two options from different classes overlap: <code>¬a ∨ ¬b</code>.</li>
+        <li><strong>Blocked times and hours:</strong> An option during work or outside your hours becomes a single-literal clause <code>¬x</code>.</li>
       </ul>
 
-      <h3>2. Counting days with a sequential counter</h3>
+      <h3>2. Counting days on campus using a sequential counter</h3>
       <p>
-        "At most <em>k</em> days on campus" is a counting constraint, and CNF can't count directly.
-        I add a variable <code>d<sub>Mon</sub>, d<sub>Tue</sub>, …</code> for each day with the implication
-        <code>x → d<sub>day(x)</sub></code>, then encode "at most <em>k</em> of the <code>d</code>'s are true"
-        using Sinz's <strong>sequential counter</strong>. The counter adds <em>O(n·k)</em> auxiliary variables that
-        track a running total, instead of the exponential number of clauses a naive encoding needs.
+        “At most <em>k</em> days on campus” is a counting constraint, and CNF can’t count directly.
+        I added variables <code>d<sub>Mon</sub>, d<sub>Tue</sub>, d<sub>Wed</sub>, …</code> for each day with the implication
+        <code>x → d<sub>day(x)</sub></code>, then encoded “at most <em>k</em> of the <code>d</code>’s are true”
+        using Sinz’s <strong>sequential counter</strong>. The counter adds <em>O(n·k)</em> auxiliary variables that
+        track a running total, instead of the exponential number of clauses a naive encoding requires.
       </p>
 
-      <h3>3. The solver</h3>
+      <h3>3. How the solver works</h3>
       <p>
-        The solver in <code>solver.js</code> is a DPLL search with <strong>two watched literals</strong> for unit propagation.
-        Each clause only wakes up when one of its two watched literals becomes false, so propagation doesn't rescan
-        every clause. Branching favours variables that keep showing up in conflicts. It's tested against brute force on
-        2,000 random formulas and on the pigeonhole principle, a classic unsatisfiable formula.
+        The solver in <code>solver.js</code> uses <strong>DPLL</strong>, a search that sets variables to true or false one at a time
+        and backtracks when it reaches a contradiction. Whenever a clause has only one way left to be satisfied, the solver
+        fills in that value straight away. This step is called <strong>unit propagation</strong>. To make it fast, each clause
+        keeps watch on just two of its variables and is only rechecked when one of those two is ruled out, so the solver does
+        not have to reread every clause after each step. When the solver has to make a guess, it favours variables that keep
+        showing up in contradictions.
       </p>
 
-      <h3>4. From "is there a timetable?" to "what's the best timetable?"</h3>
+      <h3>4. Finding the best timetable</h3>
       <p>
-        SAT only answers yes or no, so <em>Minimise days</em> turns it into optimisation. It solves once, counts the days used,
-        then asks "is there a solution with one fewer day?" and repeats until the answer is <strong>UNSAT</strong>.
-        That final UNSAT is a proof that no better timetable exists, not a guess.
-        <em>Show another</em> adds a <strong>blocking clause</strong> that rules out the current timetable, so the solver has to find a different one.
+        A SAT solver can only answer yes or no: either a valid timetable exists or it does not.
+        The “Minimise days” feature turns this into a search for the best answer. It solves once, counts how many days the
+        timetable uses, and then asks whether a valid timetable exists with one fewer day. It repeats this until the answer
+        is no (<strong>UNSAT</strong>). That final no proves that no timetable can use fewer days.
+        The “Show another” feature adds a clause that rules out the current timetable, so the solver has to find a different one.
       </p>
 
       <h3>The formula for the current input</h3>
